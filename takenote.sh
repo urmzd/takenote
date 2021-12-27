@@ -1,14 +1,32 @@
 #!/usr/bin/env zsh
 
-takenote() {
-  work_dir=$PWD
+# Make commit.
+gtakenote() {
+  takenote2 $#
+}
 
-  journal="$HOME/personal/journal"
+takenote2() {
+  # Store location of call.
+  workDir=`pwd`
 
-  year="$(date "+%Y")"
-  week="$(date "+%U")"
+  # Location to store journal notes. 
+  # TODO: Migration from default directory (if any exists).
+  DEFAULT_JOURNAL_DIR="~/.journal"
+  journalDir="${TAKENOTE_JOURNAL_DIR:-$DEFAULT_JOURNAL_DIR}"
 
-  notepad="$journal/$year/$week.md"
+  # Create directory if it does not exist.
+  if [[ ! -d $journalDir ]]
+  then
+    mkdir $journalDir
+  fi
+
+  # TODO: Use an alternative datastructure to optimize search.
+  # Current: O(N) where N is the number of files.
+  timestamp=`date "%s"`
+  
+  noteFile="$journalDir/$timestamp"
+
+  echo "$notepad"
 
   if [[ ! -f $notepad ]] 
   then
@@ -22,9 +40,10 @@ takenote() {
     return 1
   fi
 
-  $note="$1"
+  note="$1"
+  echo "$note"
 
-  echo "$note" > $notepad
+  #echo "$note" > $notepad
   #cd $journal
 
   #git add .
