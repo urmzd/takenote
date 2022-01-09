@@ -1,4 +1,4 @@
-# Takenote
+# Confreence
 A secure, fast and extensible journal developed in Rust. 
 
 ## Table Of Contents
