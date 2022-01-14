@@ -1,19 +1,32 @@
 # Confreence
-A secure, fast and extensible journal developed in Rust. 
+
+A secure, fast and extensible journal developed in Rust.
+
+## Impetus
+Sometimes I don't want to break away from my terminal to create quick documentation 
+or a make a reminder of what I need to do next. Confreence is meant to serve a similar 
+purpose to Atlassian's [Confluence](https://www.atlassian.com/software/confluence) but
+with the all the benefits of a terminal-first, self-hosted and free (hence the name) solution.
 
 ## Table Of Contents
+
+- [Impetus](#impetus)
 - [Usage](#usage)
 - [Features](#features)
+    - [Phase 1](#phase-1)
+    - [Phase 2](#phase-2)
+    - [Phase 3](#phase-3)
 
 ## Usage
-To use the platform, you must... (in progress)
+This will be updated when phase #1 is completed.
 
 ## Features
-- [ ] Take public notes
-- [ ] Take private notes
-- [ ] Store notes on a version control platform
-- [ ] Sort, filter and mutate notes.
-- [ ] User friendly interface to interact with notes. 
-- [ ] Download formatted notes.
-
-
+### Phase 1
+- [ ] Store Notes Locally
+### Phase 2
+- [ ] Connect Git Credentials
+- [ ] Connect Git Branches
+- [ ] Store Notes on Git
+### Phase 3
+- [ ] Query Notes
+- [ ] Provide Template to Build Static Website
