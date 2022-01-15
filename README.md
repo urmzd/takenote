@@ -26,7 +26,7 @@ This will be updated when phase #1 is completed.
     confreence init --name=<project name>
     confreence build --template=<gatsby|...> 
 
-    # TODO: SSH-only support
+    # NOTE: SSH-ONLY SUPPORT
     confreence track --remote-name=<remote url>
 ```
 
