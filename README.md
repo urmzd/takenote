@@ -20,6 +20,16 @@ with the all the benefits of a terminal-first, self-hosted and free (hence the n
 ## Usage
 This will be updated when phase #1 is completed.
 
+### Commands
+```bash
+    # IMPORTANT: THESE ARE NOT IMPLEMENTED. 
+    confreence init --name=<project name>
+    confreence build --template=<gatsby|...> 
+
+    # TODO: SSH-only support
+    confreence track --remote-name=<remote url>
+```
+
 ## Features
 ### Phase 1
 - [ ] Store Notes Locally
