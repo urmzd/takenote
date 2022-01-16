@@ -1,0 +1,12 @@
+[dirs]
+parent = "~"
+children = [
+  "~/example-1",
+  "~/example-2",
+  "~/example-3"
+]
+
+[creds]
+github="~/.github.credentials"
+medium="~/.medium.credentials"
+
