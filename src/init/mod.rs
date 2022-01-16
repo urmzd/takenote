@@ -1,14 +1,11 @@
-struct Message {
-    message: String,
-    date: String,
-    // By default, this should be the computer's name.
-    author: String,
-}
+mod Init {
 
-struct File {
-    filename: String,
-    dateCreated: String,
-    dateLastUpdated: String,
-}
+    pub struct Config {
+        configDir: String,
 
-fn createMarkdown() {}
+    }
+
+    fn readConfig() {
+
+    }
+}
