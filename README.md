@@ -31,7 +31,7 @@ This will be updated when phase #1 is completed.
 ```bash
     # IMPORTANT: THESE ARE NOT IMPLEMENTED.
     takenote init --name=<project name>
-    takenote build --template=<gatsby|medium|...>
+    takenote deploy --providers=<linkedin|medium|...>
 ```
 
 ### Contributing
