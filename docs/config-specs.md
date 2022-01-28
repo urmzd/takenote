@@ -4,19 +4,13 @@
 
 ```bash
   # Where does the "root" config exist
-  export CONFREENCE_ROOT_CONIFG="~/.confreence.config.yaml"
+  export TAKENOTE_DEFAULT_DIR="~/takenote.toml"
 ```
 
-```typescript
-  export type Config = {
-    credentials: {
-      [providerName: string]: String;
-    };
-    // Where the "build" starts from.
-    rootDir: String;
-    // List of children directories.
-    childrenDir: {
-      [resourceName: string]: String;
-    } 
-  }
+```toml
+  children = ["~/random-folder", "~/random-folder2"]
+
+  [providers]
+  medium   = "mmmmmmmmmmmm"
+  linkedin = "nnnnnnnnnnnn"
 ```
