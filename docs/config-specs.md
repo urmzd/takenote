@@ -8,9 +8,10 @@
 ```
 
 ```toml
-  children = ["~/random-folder", "~/random-folder2"]
+  name = "Urmzd Mukhammadnaim"
+  children = ["~/folder1", "~/folder2"]
 
   [providers]
-  medium   = "mmmmmmmmmmmm"
-  linkedin = "nnnnnnnnnnnn"
+  medium   = "auth-key01"
+  linkedin = "auth-key02"
 ```
