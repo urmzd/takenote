@@ -1,61 +1,47 @@
 pub mod init {
-    use std::env::{self, VarError};
+    use std::{
+        env::{self, VarError},
+        error::Error,
+        fs,
+    };
 
-    use serde::{Deserialize, Serialize, de::Error};
+    use serde::{Deserialize, Serialize};
 
     #[allow(dead_code)]
     struct Environment {
         default_dir: String,
     }
 
-    /// TODO - Retrieve and deserialize environment file.
-    ///
-    ///
-    ///
-    ///
-    ///
     impl Environment {
         #[allow(dead_code)]
         fn pull() -> Result<Environment, VarError> {
-            let default_dir = env::var("TAKENOTE_DEFAULT_DIR")?;
+            let default_dir = env::var("TAKENOTE_DEFAULT_HEAD")?;
 
-            let enviroment = Environment { default_dir };
-            return Ok(enviroment);
+            return Ok(Environment { default_dir });
         }
     }
 
-    #[allow(dead_code)]
     #[derive(Serialize, Deserialize, Debug)]
     struct ServiceProviders {
         linkedin: String,
         medium: String,
     }
 
+    #[derive(Serialize, Deserialize, Debug)]
     struct Config {
+        name: String,
         children: Option<Vec<String>>,
         providers: Option<ServiceProviders>,
     }
 
     impl Config {
         #[allow(dead_code)]
-        fn read_config_from_file(file_content: &String) -> Result<Config, Error> {
-            let config: Result<Config, Error> = toml::from_str(file_content)
-            return Ok(Config {
-                children: None,
-                providers: None,
-            });
-        }
+        fn read_config_from_file(file_path: &String) -> Result<Config, Box<dyn Error>> {
+            let contents = fs::read_to_string(file_path)?;
+            let config = toml::from_str(&contents)?;
 
-        #[allow(dead_code)]
-        fn read_config_from_cli(args: &[String]) -> Result<Config, &str> {
-            return Ok(Config {
-                children: None,
-                providers: None,
-            });
+            return Ok(config);
         }
-
-        #[allow(dead_code)]
-        fn merge_config() {}
     }
 
     #[allow(dead_code)]
