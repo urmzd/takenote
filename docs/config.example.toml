@@ -1,0 +1,6 @@
+  name = "Urmzd Mukhammadnaim"
+  children = ["~/folder1", "~/folder2"]
+
+  [providers]
+  medium   = "auth-key01"
+  linkedin = "auth-key02"
