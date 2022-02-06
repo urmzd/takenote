@@ -36,23 +36,11 @@ This will be updated when phase #1 is completed.
 
 ### Contributing
 
-To contribute...
+- [TODO] To contribute...
 
 ## Features
 
-### Phase 1
-
+- [ ] Initialize Projects
 - [ ] Store Notes Locally
-
-### Phase 2
-
-- [ ] Connect Git Credentials
-- [ ] Store Notes on Git
-
-### Phase 3
-
 - [ ] Query Notes
 
-### Phase 4
-
-- [ ] Provide Template to Build Static Website
