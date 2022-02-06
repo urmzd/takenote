@@ -7,14 +7,12 @@ pub mod init {
 
     use serde::{Deserialize, Serialize};
 
-    #[allow(dead_code)]
-    struct Environment {
-        default_dir: String,
+    pub struct Environment {
+        pub default_dir: String,
     }
 
     impl Environment {
-        #[allow(dead_code)]
-        fn pull() -> Result<Environment, VarError> {
+        pub fn pull() -> Result<Environment, VarError> {
             let default_dir = env::var("TAKENOTE_DEFAULT_HEAD")?;
 
             return Ok(Environment { default_dir });
@@ -36,13 +34,16 @@ pub mod init {
 
     impl Config {
         #[allow(dead_code)]
-        fn read_config_from_file(file_path: &String) -> Result<Config, Box<dyn Error>> {
+        fn read_config_from_file(file_path: &str) -> Result<Config, Box<dyn Error>> {
             let contents = fs::read_to_string(file_path)?;
             let config = toml::from_str(&contents)?;
 
             return Ok(config);
         }
     }
+
+    #[allow(dead_code)]
+    fn init_folders() {}
 
     #[allow(dead_code)]
     fn run() {}

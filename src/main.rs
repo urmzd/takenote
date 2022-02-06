@@ -1,3 +1,10 @@
-fn main() {
-    println!("Hello, world!");
+use std::env::VarError;
+
+mod init;
+
+fn main() -> Result<(), VarError> {
+    let env = init::init::Environment::pull()?;
+    println!("GOT MY VARIABLE YUH {}", env.default_dir);
+
+    Ok(())
 }
