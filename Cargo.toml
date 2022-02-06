@@ -1,6 +1,6 @@
 [package]
 name = "takenote"
-version = "0.1.0"
+version = "0.0.1"
 edition = "2021"
 
 [dependencies]
@@ -11,4 +11,3 @@ assert_fs = "1.0.7"
 serde = { version = "1.0", features = ["derive"]}
 toml = "0.5.8"
 clap = { version = "3.0.13", features=["derive"]}
-
