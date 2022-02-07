@@ -1,6 +1,6 @@
 use std::error::Error;
 
-mod init;
+use takenote::init;
 
 fn main() -> Result<(), Box<dyn Error>> {
     let env = init::Environment::pull()?;
