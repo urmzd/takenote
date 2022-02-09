@@ -478,6 +478,7 @@ dependencies = [
  "log",
  "predicates",
  "serde",
+ "tempfile",
  "toml",
 ]
 
