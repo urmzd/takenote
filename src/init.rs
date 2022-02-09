@@ -46,6 +46,7 @@ mod test {
     #[test]
     fn given_valid_file_path_when_file_is_read_then_config_is_provided(
     ) -> Result<(), Box<dyn Error>> {
+        // Arrage
         let tmp_config = Config {
             name: "Urmzd Mukhammadnaim".to_string(),
             children: None,
@@ -57,11 +58,13 @@ mod test {
 
         tmp_file.write_all(&tmp_config_string.as_bytes())?;
 
+        // Act
         let config_to_match = match tmp_file.path().to_str() {
             Some(value) => Config::read_config_from_file(&value.to_string()),
             _ => return Err("THIS SHOULD NEVER HAPPEN".into()),
         }?;
 
+        // Assert
         assert_eq!(config_to_match, tmp_config);
 
         Ok(())
