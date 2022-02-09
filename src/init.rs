@@ -46,7 +46,7 @@ mod test {
     #[test]
     fn given_valid_file_path_when_file_is_read_then_config_is_provided(
     ) -> Result<(), Box<dyn Error>> {
-        // Arrage
+        // Arrange
         let tmp_config = Config {
             name: "Urmzd Mukhammadnaim".to_string(),
             children: None,
