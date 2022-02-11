@@ -63,7 +63,7 @@ mod test {
         // Act
         let config_to_match = match tmp_file.path().to_str() {
             Some(value) => Config::read_config_from_file(&value.to_string()),
-            _ => return Err("THIS SHOULD NEVER HAPPEN".into()),
+            None => Err("THIS SHOULD NEVER HAPPEN".into()),
         }?;
 
         // Assert
@@ -76,7 +76,7 @@ mod test {
     fn given_env_var_is_set_when_environment_is_read_then_environment_struct_is_provided(
     ) -> Result<(), Box<dyn Error>> {
         // Arrange.
-        let _current_env_var = env::var(DEFAULT_HEAD_ENV_VAR).unwrap_or("".to_string());
+        let current_env_var = env::var(DEFAULT_HEAD_ENV_VAR);
 
         let test_var_value = "TEST_VAR_VALUE";
 
@@ -89,8 +89,27 @@ mod test {
         assert_eq!(enviroment.default_dir, test_var_value.to_string());
 
         // Cleanup.
-        env::set_var(DEFAULT_HEAD_ENV_VAR, _current_env_var);
+        if current_env_var.is_ok() {
+            env::set_var(DEFAULT_HEAD_ENV_VAR, current_env_var.unwrap());
+        }
 
         Ok(())
+    }
+
+    #[test]
+    #[should_panic]
+    fn given_unset_env_var_when_environment_is_read_errr_is_thrown() {
+        // Arrange
+        let current_env_var = env::var(DEFAULT_HEAD_ENV_VAR);
+
+        env::remove_var(DEFAULT_HEAD_ENV_VAR);
+
+        let enviroment = Environment::pull();
+
+        if current_env_var.is_ok() {
+            env::set_var(DEFAULT_HEAD_ENV_VAR, current_env_var.unwrap());
+        }
+
+        enviroment.unwrap();
     }
 }
