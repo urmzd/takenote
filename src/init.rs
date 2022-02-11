@@ -21,15 +21,32 @@ struct ServiceProviders {
     linkedin: String,
     medium: String,
 }
-
+/// A container holding the parsed data from a Takenote configuration file.
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
 pub struct Config {
+    /// The name associated with this journal.
     name: String,
+    /// A collection of journals available to reference.
     children: Option<Vec<String>>,
-    providers: Option<ServiceProviders>,
 }
 
+/// The methods associated with the Config object.
 impl Config {
+    /// [TODO:description]
+    ///
+    /// # Arguments
+    ///
+    /// * `file_path` - [TODO:description]
+    ///
+    /// # Errors
+    ///
+    /// [TODO:description]
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// [TODO:example]
+    /// ```
     pub fn read_config_from_file(file_path: &String) -> Result<Config, Box<dyn Error>> {
         let contents = fs::read_to_string(file_path)?;
         let config = toml::from_str(&contents)?;
@@ -77,7 +94,6 @@ mod test {
     ) -> Result<(), Box<dyn Error>> {
         // Arrange.
         let current_env_var = env::var(DEFAULT_HEAD_ENV_VAR);
-
         let test_var_value = "TEST_VAR_VALUE";
 
         env::set_var(DEFAULT_HEAD_ENV_VAR, &test_var_value);
