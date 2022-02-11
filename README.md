@@ -4,12 +4,14 @@ A secure, fast and extensible journal developed in Rust.
 
 ## Impetus
 
-Sometimes I don't want to break away from my terminal to create quick notes, yes.., I'm lazy.
-Takenote is meant to serve a similar purpose to Atlassian's [Confluence](https://www.atlassian.com/software/confluence) but
-with the all the benefits of a terminal-first, self-hosted and free solution.
+If you're an individual who actively part takes in note taking, you know how difficult it is to ensure the notes you write are
+legible in the future. Maybe you write the notes in the morning, or quickly during a meeting or while you're contemplating if you 
+should sleep or watch another episode peaky blinders. Whatever the case may be, you dislike effort but you like writing down your thoughts,
+all you want is to stay organized, ensure your notes are legible and most importantly still remain lazy. 
 
-Takenote is meant to serve as a middle man for writing enthusiasts. Enabing high-speed content creation
-in a matter of a few clicks.
+Based off the [Zettelkasten note taking system](https://en.wikipedia.org/wiki/Zettelkasten), **Takenote** aims to write high quality
+journals based off small or not so small messages. Simply type your thought using the takenote command and we'll do the boring 
+things for you. When you look back, you'll be suprised how good of a writer you've become without putting any additional effort.
 
 ## Table Of Contents
 
@@ -43,4 +45,3 @@ This will be updated when phase #1 is completed.
 - [ ] Initialize Projects
 - [ ] Store Notes Locally
 - [ ] Query Notes
-
