@@ -6,9 +6,11 @@ pub struct Environment {
     pub default_dir: String,
 }
 
+const DEFAULT_HEAD_ENV_VAR: &str = "TAKENOTE_DEFAULT_HEAD";
+
 impl Environment {
     pub fn pull() -> Result<Environment, VarError> {
-        let default_dir = env::var("TAKENOTE_DEFAULT_HEAD")?;
+        let default_dir = env::var(DEFAULT_HEAD_ENV_VAR)?;
 
         return Ok(Environment { default_dir });
     }
@@ -66,6 +68,28 @@ mod test {
 
         // Assert
         assert_eq!(config_to_match, tmp_config);
+
+        Ok(())
+    }
+
+    #[test]
+    fn given_env_var_is_set_when_file_is_read_then_environment_is_provided(
+    ) -> Result<(), Box<dyn Error>> {
+        // Arrange.
+        let _current_env_var = env::var(DEFAULT_HEAD_ENV_VAR).unwrap_or("".to_string());
+
+        let test_var_value = "TEST_VAR_VALUE";
+
+        env::set_var(DEFAULT_HEAD_ENV_VAR, &test_var_value);
+
+        // Act.
+        let enviroment = Environment::pull()?;
+
+        // Assert.
+        assert_eq!(enviroment.default_dir, test_var_value.to_string());
+
+        // Cleanup.
+        env::set_var(DEFAULT_HEAD_ENV_VAR, _current_env_var);
 
         Ok(())
     }
