@@ -73,7 +73,7 @@ mod test {
     }
 
     #[test]
-    fn given_env_var_is_set_when_file_is_read_then_environment_is_provided(
+    fn given_env_var_is_set_when_environment_is_read_then_environment_struct_is_provided(
     ) -> Result<(), Box<dyn Error>> {
         // Arrange.
         let _current_env_var = env::var(DEFAULT_HEAD_ENV_VAR).unwrap_or("".to_string());
