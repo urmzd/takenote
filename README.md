@@ -6,8 +6,8 @@ A secure, fast and extensible journal developed in Rust.
 
 If you're an individual who actively part takes in note taking, you know how difficult it is to ensure the notes you write are
 legible in the future. Maybe you write the notes in the morning, or quickly during a meeting or while you're contemplating if you 
-should sleep or watch another episode peaky blinders. Whatever the case may be, you dislike effort but you like writing down your thoughts,
-all you want is to stay organized, ensure your notes are legible and most importantly still remain lazy. 
+should sleep or watch another episode Peaky Blinders. Whatever the case may be, you dislike effort but you like writing down your thoughts.
+All you want is to stay organized, ensure your notes are legible and most importantly, remain lazy. 
 
 Based off the [Zettelkasten note taking system](https://en.wikipedia.org/wiki/Zettelkasten), **Takenote** aims to write high quality
 journals based off small or not so small messages. Simply type your thought using the takenote command and we'll do the boring 
