@@ -2,13 +2,25 @@ use std::{env, env::VarError, error::Error, fs};
 
 use serde::{Deserialize, Serialize};
 
+const DEFAULT_HEAD_ENV_VAR: &str = "TAKENOTE_DEFAULT_HEAD";
+
+/// Holds environment variables
 pub struct Environment {
     pub default_dir: String,
 }
 
-const DEFAULT_HEAD_ENV_VAR: &str = "TAKENOTE_DEFAULT_HEAD";
-
 impl Environment {
+    /// Retrieves the environment variables needed to intialize the project.
+    ///
+    /// # Errors
+    ///
+    /// Returns a [`VarError`] if the a required environment variable is not set.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// let environment = Environment::pull();
+    /// ```
     pub fn pull() -> Result<Environment, VarError> {
         let default_dir = env::var(DEFAULT_HEAD_ENV_VAR)?;
 
@@ -16,11 +28,6 @@ impl Environment {
     }
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-struct ServiceProviders {
-    linkedin: String,
-    medium: String,
-}
 /// A container holding the parsed data from a Takenote configuration file.
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
 pub struct Config {
@@ -30,22 +37,19 @@ pub struct Config {
     children: Option<Vec<String>>,
 }
 
-/// The methods associated with the Config object.
 impl Config {
-    /// [TODO:description]
-    ///
-    /// # Arguments
-    ///
-    /// * `file_path` - [TODO:description]
+    /// Parses the contents from a Takenote configuration file.
     ///
     /// # Errors
     ///
-    /// [TODO:description]
+    /// Returns an error if the file_path is invalid or the contents
+    /// of the configuration file do not match the specs outlined in
+    /// [`Config`].
     ///
     /// # Examples
     ///
     /// ```
-    /// [TODO:example]
+    /// let config = read_config_from_file("/home/urmzd/.takenote.config.toml");
     /// ```
     pub fn read_config_from_file(file_path: &String) -> Result<Config, Box<dyn Error>> {
         let contents = fs::read_to_string(file_path)?;
@@ -69,7 +73,6 @@ mod test {
         let tmp_config = Config {
             name: "Urmzd Mukhammadnaim".to_string(),
             children: None,
-            providers: None,
         };
 
         let tmp_config_string = toml::to_string(&tmp_config)?;
