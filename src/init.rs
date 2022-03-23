@@ -51,14 +51,22 @@ impl Config {
     /// ```
     /// let config = read_config_from_file("/home/urmzd/.takenote.config.toml");
     /// ```
+    // FIXME - move away from &String (opt in for Path)
+    // Move the following logic to TryFrom trait implementation
     pub fn read_config_from_file(file_path: &String) -> Result<Config, Box<dyn Error>> {
         let contents = fs::read_to_string(file_path)?;
         let config = toml::from_str(&contents)?;
 
         return Ok(config);
     }
+
+    // Default root_dir to current working directory.
+    pub fn generate_folder_structure_from_config(&self, root_dir: &String) {
+
+    }
 }
 
+// FIXME - Update tests to use Path
 #[cfg(test)]
 mod test {
 
