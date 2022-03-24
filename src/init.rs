@@ -1,15 +1,14 @@
-use std::{env, env::VarError, error::Error, fs};
+use std::{env, fs, path::Path};
 
 use serde::{Deserialize, Serialize};
 
 const DEFAULT_HEAD_ENV_VAR: &str = "TAKENOTE_DEFAULT_HEAD";
 
-/// Holds environment variables
-pub struct Environment {
-    pub default_dir: String,
+pub struct Environment<'a> {
+    pub default_dir: &'a Path,
 }
 
-impl Environment {
+impl<'a> Environment<'a> {
     /// Retrieves the environment variables needed to intialize the project.
     ///
     /// # Errors
@@ -19,12 +18,13 @@ impl Environment {
     /// # Examples
     ///
     /// ```
-    /// let environment = Environment::pull();
+    /// let environment = Environment::new();
     /// ```
-    pub fn pull() -> Result<Environment, VarError> {
-        let default_dir = env::var(DEFAULT_HEAD_ENV_VAR)?;
+    pub fn new() -> Self {
+        let default_dir_str = env::var(DEFAULT_HEAD_ENV_VAR).unwrap();
+        let default_dir = Path::new(&default_dir_str);
 
-        return Ok(Environment { default_dir });
+        Environment { default_dir }
     }
 }
 
@@ -35,6 +35,13 @@ pub struct Config {
     name: String,
     /// A collection of journals available to reference.
     children: Option<Vec<String>>,
+}
+
+impl From<&Path> for Config {
+    fn from(file_path: &Path) -> Self {
+        let contents = fs::read_to_string(file_path).unwrap();
+        let config: Config = toml::from_str(&contents).unwrap();
+    }
 }
 
 impl Config {
@@ -51,19 +58,8 @@ impl Config {
     /// ```
     /// let config = read_config_from_file("/home/urmzd/.takenote.config.toml");
     /// ```
-    // FIXME - move away from &String (opt in for Path)
-    // Move the following logic to TryFrom trait implementation
-    pub fn read_config_from_file(file_path: &String) -> Result<Config, Box<dyn Error>> {
-        let contents = fs::read_to_string(file_path)?;
-        let config = toml::from_str(&contents)?;
-
-        return Ok(config);
-    }
-
     // Default root_dir to current working directory.
-    pub fn generate_folder_structure_from_config(&self, root_dir: &String) {
-
-    }
+    pub fn generate_folder_structure_from_config(&self, root_dir: &String) -> () {}
 }
 
 // FIXME - Update tests to use Path
