@@ -1,14 +1,19 @@
-use std::{env, fs, path::Path};
+use std::{
+    env, fs,
+    path::{Path, PathBuf},
+};
 
 use serde::{Deserialize, Serialize};
 
 const DEFAULT_HEAD_ENV_VAR: &str = "TAKENOTE_DEFAULT_HEAD";
 
-pub struct Environment<'a> {
-    pub default_dir: &'a Path,
+/// Holds the values of the environment variables required to run `takenote`.
+pub struct Environment {
+    /// Points to the directory which contains the entrypoint.
+    pub default_dir: PathBuf,
 }
 
-impl<'a> Environment<'a> {
+impl Environment {
     /// Retrieves the environment variables needed to intialize the project.
     ///
     /// # Errors
@@ -20,9 +25,9 @@ impl<'a> Environment<'a> {
     /// ```
     /// let environment = Environment::new();
     /// ```
-    pub fn new() -> Self {
-        let default_dir_str = env::var(DEFAULT_HEAD_ENV_VAR).unwrap();
-        let default_dir = Path::new(&default_dir_str);
+    pub fn new() -> Environment {
+        let default_dir_str: String = env::var(DEFAULT_HEAD_ENV_VAR).unwrap();
+        let default_dir: PathBuf = Path::new(&default_dir_str).to_owned();
 
         Environment { default_dir }
     }
@@ -41,6 +46,7 @@ impl From<&Path> for Config {
     fn from(file_path: &Path) -> Self {
         let contents = fs::read_to_string(file_path).unwrap();
         let config: Config = toml::from_str(&contents).unwrap();
+        config
     }
 }
 
@@ -62,10 +68,12 @@ impl Config {
     pub fn generate_folder_structure_from_config(&self, root_dir: &String) -> () {}
 }
 
-// FIXME - Update tests to use Path
+///
+/// # TODO:
+///     - [ ]
+///
 #[cfg(test)]
 mod test {
-
     use super::*;
     use std::{error::Error, io::Write};
     use tempfile::NamedTempFile;
