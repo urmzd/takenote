@@ -1,5 +1,7 @@
 # Takenote
 
+<image style="height:100px;width:100px;" src="assets/takenote-logos.jpeg" alt="Takenote Logo"/>
+
 A secure, fast and extensible journal developed in Rust.
 
 ## Impetus
