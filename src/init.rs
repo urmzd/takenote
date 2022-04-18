@@ -1,5 +1,7 @@
 use std::{
-    env, fs,
+    env,
+    error::Error,
+    fs, os,
     path::{Path, PathBuf},
 };
 
@@ -51,21 +53,18 @@ impl From<&Path> for Config {
 }
 
 impl Config {
-    /// Parses the contents from a Takenote configuration file.
-    ///
-    /// # Errors
-    ///
-    /// Returns an error if the file_path is invalid or the contents
-    /// of the configuration file do not match the specs outlined in
-    /// [`Config`].
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// let config = read_config_from_file("/home/urmzd/.takenote.config.toml");
-    /// ```
-    // Default root_dir to current working directory.
-    pub fn generate_folder_structure_from_config(&self, root_dir: &String) -> () {}
+    pub fn generate_folder_structure_from_config(
+        &self,
+        root_dir: Option<&String>,
+    ) -> Result<(), Box<dyn Error>> {
+        let cwd = env::current_dir()?.as_os_str().to_str().unwrap().to_owned();
+        let working_dir: &String = root_dir.unwrap_or(&cwd);
+
+        // Create directory.
+        std::fs::create_dir(working_dir)?;
+
+        return Ok(());
+    }
 }
 
 ///
