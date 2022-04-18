@@ -1,44 +1,78 @@
-use std::{env, env::VarError, error::Error, fs};
+use std::{
+    env,
+    error::Error,
+    fs, os,
+    path::{Path, PathBuf},
+};
 
 use serde::{Deserialize, Serialize};
 
+const DEFAULT_HEAD_ENV_VAR: &str = "TAKENOTE_DEFAULT_HEAD";
+
+/// Holds the values of the environment variables required to run `takenote`.
 pub struct Environment {
-    pub default_dir: String,
+    /// Points to the directory which contains the entrypoint.
+    pub default_dir: PathBuf,
 }
 
 impl Environment {
-    pub fn pull() -> Result<Environment, VarError> {
-        let default_dir = env::var("TAKENOTE_DEFAULT_HEAD")?;
+    /// Retrieves the environment variables needed to intialize the project.
+    ///
+    /// # Errors
+    ///
+    /// Returns a [`VarError`] if the a required environment variable is not set.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// let environment = Environment::new();
+    /// ```
+    pub fn new() -> Environment {
+        let default_dir_str: String = env::var(DEFAULT_HEAD_ENV_VAR).unwrap();
+        let default_dir: PathBuf = Path::new(&default_dir_str).to_owned();
 
-        return Ok(Environment { default_dir });
+        Environment { default_dir }
     }
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-struct ServiceProviders {
-    linkedin: String,
-    medium: String,
-}
-
+/// A container holding the parsed data from a Takenote configuration file.
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
 pub struct Config {
+    /// The name associated with this journal.
     name: String,
+    /// A collection of journals available to reference.
     children: Option<Vec<String>>,
-    providers: Option<ServiceProviders>,
+}
+
+impl From<&Path> for Config {
+    fn from(file_path: &Path) -> Self {
+        let contents = fs::read_to_string(file_path).unwrap();
+        let config: Config = toml::from_str(&contents).unwrap();
+        config
+    }
 }
 
 impl Config {
-    pub fn read_config_from_file(file_path: &String) -> Result<Config, Box<dyn Error>> {
-        let contents = fs::read_to_string(file_path)?;
-        let config = toml::from_str(&contents)?;
+    pub fn generate_folder_structure_from_config(
+        &self,
+        root_dir: Option<&String>,
+    ) -> Result<(), Box<dyn Error>> {
+        let cwd = env::current_dir()?.as_os_str().to_str().unwrap().to_owned();
+        let working_dir: &String = root_dir.unwrap_or(&cwd);
 
-        return Ok(config);
+        // Create directory.
+        std::fs::create_dir(working_dir)?;
+
+        return Ok(());
     }
 }
 
+///
+/// # TODO:
+///     - [ ]
+///
 #[cfg(test)]
 mod test {
-
     use super::*;
     use std::{error::Error, io::Write};
     use tempfile::NamedTempFile;
@@ -46,10 +80,10 @@ mod test {
     #[test]
     fn given_valid_file_path_when_file_is_read_then_config_is_provided(
     ) -> Result<(), Box<dyn Error>> {
+        // Arrange
         let tmp_config = Config {
             name: "Urmzd Mukhammadnaim".to_string(),
             children: None,
-            providers: None,
         };
 
         let tmp_config_string = toml::to_string(&tmp_config)?;
@@ -57,13 +91,55 @@ mod test {
 
         tmp_file.write_all(&tmp_config_string.as_bytes())?;
 
+        // Act
         let config_to_match = match tmp_file.path().to_str() {
             Some(value) => Config::read_config_from_file(&value.to_string()),
-            _ => return Err("THIS SHOULD NEVER HAPPEN".into()),
+            None => Err("THIS SHOULD NEVER HAPPEN".into()),
         }?;
 
+        // Assert
         assert_eq!(config_to_match, tmp_config);
 
         Ok(())
+    }
+
+    #[test]
+    fn given_env_var_is_set_when_environment_is_read_then_environment_struct_is_provided(
+    ) -> Result<(), Box<dyn Error>> {
+        // Arrange.
+        let current_env_var = env::var(DEFAULT_HEAD_ENV_VAR);
+        let test_var_value = "TEST_VAR_VALUE";
+
+        env::set_var(DEFAULT_HEAD_ENV_VAR, &test_var_value);
+
+        // Act.
+        let enviroment = Environment::pull()?;
+
+        // Assert.
+        assert_eq!(enviroment.default_dir, test_var_value.to_string());
+
+        // Cleanup.
+        if current_env_var.is_ok() {
+            env::set_var(DEFAULT_HEAD_ENV_VAR, current_env_var.unwrap());
+        }
+
+        Ok(())
+    }
+
+    #[test]
+    #[should_panic]
+    fn given_unset_env_var_when_environment_is_read_errr_is_thrown() {
+        // Arrange
+        let current_env_var = env::var(DEFAULT_HEAD_ENV_VAR);
+
+        env::remove_var(DEFAULT_HEAD_ENV_VAR);
+
+        let enviroment = Environment::pull();
+
+        if current_env_var.is_ok() {
+            env::set_var(DEFAULT_HEAD_ENV_VAR, current_env_var.unwrap());
+        }
+
+        enviroment.unwrap();
     }
 }
