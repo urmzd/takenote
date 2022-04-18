@@ -19,9 +19,9 @@ pub struct Environment {
 impl Environment {
     /// Retrieves the environment variables needed to intialize the project.
     ///
-    /// # Errors
+    /// # Panics
     ///
-    /// Returns a [`VarError`] if the a required environment variable is not set.
+    /// Panics if the required environment variables are not set.
     ///
     /// # Examples
     ///
