@@ -1,2 +1,2 @@
-pub mod self::environment;
-pub mod self::config;
+pub mod config;
+pub mod environment;

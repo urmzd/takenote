@@ -1,1 +1,1 @@
-mod init::config;
+pub mod load;

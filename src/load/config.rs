@@ -1,7 +1,9 @@
-use serde::{
-    Serialize,
-    Deserialize
-}
+use serde::{Deserialize, Serialize};
+use std::env;
+use std::error::Error;
+use std::fs;
+use std::path::PathBuf;
+
 /// A container holding the parsed data from a Takenote configuration file.
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
 pub struct Config {
