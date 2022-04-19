@@ -1,3 +1,7 @@
+use serde::{
+    Serialize,
+    Deserialize
+}
 /// A container holding the parsed data from a Takenote configuration file.
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
 pub struct Config {

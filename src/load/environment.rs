@@ -1,3 +1,10 @@
+use super::constants::DEFAULT_HEAD_ENV_VAR;
+use serde::Serialize;
+use std::{
+    env,
+    path::{Path, PathBuf},
+};
+
 /// Holds the values of the environment variables required to run `takenote`.
 #[derive(Debug, Serialize)]
 pub struct Environment {

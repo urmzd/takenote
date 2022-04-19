@@ -1,0 +1,1 @@
+pub const DEFAULT_HEAD_ENV_VAR: &str = "TAKENOTE_DEFAULT_HEAD";
