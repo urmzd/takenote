@@ -1,4 +1,4 @@
-use super::constants::DEFAULT_HEAD_ENV_VAR;
+use takenote::load::constants;
 use serde::Serialize;
 use std::{
     env,

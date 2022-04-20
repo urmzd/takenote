@@ -1,10 +1,10 @@
-//use takenote::init;
 use std::error::Error;
+use takenote::load;
 
 fn main() -> Result<(), Box<dyn Error>> {
-    //let env = init::Environment::new();
-    //println!("{:?}", env);
-    //let config = init::Config::from(env.default_dir);
-    //println!("{:?}", config);
+    let env = load::Environment::new();
+    println!("{:?}", env);
+    let config = load::Config::from(env.default_dir);
+    println!("{:?}", config);
     Ok(())
 }
