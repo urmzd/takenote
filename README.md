@@ -19,27 +19,18 @@ things for you. When you look back, you'll be suprised how good of a writer you'
 
 - [Impetus](#impetus)
 - [Usage](#usage)
-- [Contributing](#contributing)
-- [Features](#features)
 
 ## Usage
 
-This will be updated when phase #1 is completed.
+The following commands can be used to interact with takenote.
 
 ### Commands
 
 ```bash
-    # IMPORTANT: THESE ARE NOT IMPLEMENTED.
     takenote init --name=<project name>
-    takenote deploy --providers=<linkedin|medium|...>
+    takenote "ctrl-i jumps forward; ctrl-j to jump back in nvim."
+    # Opens editor.
+    takenote
+    # Returns file names.
+    takenote "find notes between 2022-01-01 and 2022-01-02"
 ```
-
-### Contributing
-
-- [TODO] To contribute...
-
-## Features
-
-- [ ] Initialize Projects
-- [ ] Store Notes Locally
-- [ ] Query Notes
