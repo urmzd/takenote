@@ -1,36 +1,52 @@
 use serde::{Deserialize, Serialize};
-use std::env;
 use std::error::Error;
 use std::fs;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
+use std::{env, fmt};
+
+type ConfigChildren = Option<Vec<String>>;
+type ConfigName = String;
 
 /// A container holding the parsed data from a Takenote configuration file.
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
 pub struct Config {
     /// The name associated with this journal.
-    name: String,
+    name: ConfigName,
     /// A collection of journals available to reference.
-    children: Option<Vec<String>>,
+    children: ConfigChildren,
 }
 
-impl From<PathBuf> for Config {
-    fn from(file_path: PathBuf) -> Self {
-        let contents = fs::read_to_string(file_path).unwrap();
-        let config: Config = toml::from_str(&contents).unwrap();
-        config
+#[derive(Clone, Debug)]
+struct ConfigError;
+
+impl fmt::Display for ConfigError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        writeln!(f, "Oops... Something went wrong while creating your config file, check that the path provided is valid!")
     }
 }
 
+impl Error for ConfigError {}
+
 impl Config {
-    pub fn generate_folder_structure_from_config(
+    pub fn create_project(
         &self,
-        root_dir: Option<&String>,
+        name: ConfigName,
+        children: ConfigChildren,
+        path: PathBuf,
     ) -> Result<(), Box<dyn Error>> {
-        let cwd = env::current_dir()?.as_os_str().to_str().unwrap().to_owned();
-        let working_dir: &String = root_dir.unwrap_or(&cwd);
+        let project_dir = match path.into_os_string().into_string() {
+            Ok(string_path) => string_path,
+            _ => return Err(ConfigError.into()),
+        };
+        let config = Config { name, children };
 
         // Create directory.
-        std::fs::create_dir(working_dir)?;
+        std::fs::create_dir_all(project_dir)?;
+
+        let mut project_config_path = Path::new(path).join("config.toml");
+
+        let serialized_config: String = toml::to_string(&config)?;
+        fs::write(project_config_path, serialized_config);
 
         return Ok(());
     }
