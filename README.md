@@ -27,7 +27,7 @@ The following commands can be used to interact with takenote.
 ### Commands
 
 ```bash
-    takenote init --name=<project name>
+    takenote init --name <project name> --children <path1> <path2> --path <path>
     takenote "ctrl-i jumps forward; ctrl-j to jump back in nvim."
     # Opens editor.
     takenote
