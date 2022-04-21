@@ -29,12 +29,11 @@ impl Error for ConfigError {}
 
 impl Config {
     pub fn create_project(
-        &self,
         name: ConfigName,
         children: ConfigChildren,
-        path: PathBuf,
+        path: &PathBuf,
     ) -> Result<(), Box<dyn Error>> {
-        let project_dir = match path.into_os_string().into_string() {
+        let project_dir = match path.to_owned().into_os_string().into_string() {
             Ok(string_path) => string_path,
             _ => return Err(ConfigError.into()),
         };
@@ -43,10 +42,10 @@ impl Config {
         // Create directory.
         std::fs::create_dir_all(project_dir)?;
 
-        let mut project_config_path = Path::new(path).join("config.toml");
+        let project_config_path = Path::new(&path).join("config.toml");
 
         let serialized_config: String = toml::to_string(&config)?;
-        fs::write(project_config_path, serialized_config);
+        fs::write(project_config_path, serialized_config)?;
 
         return Ok(());
     }
