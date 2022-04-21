@@ -5,7 +5,7 @@ use takenote::load;
 fn main() -> Result<(), Box<dyn Error>> {
     //let env = load::environment::Environment::new();
     //println!("{:?}", env);
-    let random_path = Path::new("~");
+    let random_path = Path::new("./random_proj");
     let random_path_buf = random_path.to_owned();
     let random_name = "random".to_owned();
 
