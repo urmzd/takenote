@@ -32,5 +32,5 @@ The following commands can be used to interact with takenote.
     # Opens editor.
     takenote
     # Returns file names.
-    takenote "find notes between 2022-01-01 and 2022-01-02"
+    takenote find "notes between 2022-01-01 and 2022-01-02"
 ```
