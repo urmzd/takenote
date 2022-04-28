@@ -12,5 +12,6 @@ fn main() -> Result<(), Box<dyn Error>> {
     //println!("{:?}", config);
     let mut cli = generate_cli();
     println!("{}", cli.render_usage());
+    cli.get_matches();
     Ok(())
 }

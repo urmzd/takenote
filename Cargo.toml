@@ -2,6 +2,8 @@
 name = "takenote"
 version = "0.0.1"
 edition = "2021"
+author = "Urmzd Mukhammadnaim"
+about = "Notetaking made easy."
 
 [dependencies]
 log = "0.4.14"
