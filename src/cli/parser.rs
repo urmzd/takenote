@@ -1,20 +1,14 @@
-use clap::Subcommand;
+use clap::{arg, command, Command};
 
-enum Commands {
-    Init,
-    Takenote,
-    Find,
+pub fn generate_cli() -> Command<'static> {
+    let find_subcommand = command!().name("find").arg(arg!([QUERY]));
+    let init_command = command!()
+        .name("init")
+        .arg(arg!(--name <PROJECT_NAME>))
+        .arg(arg!(--children ...));
+    let cli = command!()
+        .arg(arg!([MESSAGE]))
+        .subcommand(find_subcommand)
+        .subcommand(init_command);
+    return cli;
 }
-
-#[derive(Debug, Subcommand)]
-struct Init {
-    #[clap(short, long, required)]
-    name: ConfigName,
-
-    #[clap(short, long)]
-    children: ConfigChildren,
-}
-
-struct Takenote {}
-
-struct Find {}
