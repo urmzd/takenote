@@ -1,7 +1,6 @@
 use std::error::Error;
-use std::path::Path;
-use takenote::cli::parser::generate_cli;
-use takenote::load;
+use clap::StructOpt;
+use takenote::cli::parser::{Cli}
 
 fn main() -> Result<(), Box<dyn Error>> {
     //let random_path = Path::new("./random_proj");
@@ -10,8 +9,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     //let config = load::config::Config::create_project(random_name, None, &random_path_buf);
     //println!("{:?}", config);
-    let mut cli = generate_cli();
-    println!("{}", cli.render_usage());
-    cli.get_matches();
+    let cli = Cli::parse();
+    println!("{:?}", cli);
     Ok(())
 }

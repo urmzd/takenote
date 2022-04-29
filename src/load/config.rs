@@ -27,6 +27,18 @@ impl fmt::Display for ConfigError {
 
 impl Error for ConfigError {}
 
+//impl TryFrom<Cli> for Config {
+//type Error = &'static str;
+
+//fn try_from(value: Cli) -> Result<Self, Self::Error> {
+//match &value.commands {
+//Subcommands::Init { name, children } => Ok(Config { name, children }),
+//// FIXME - comment
+//_ => Err("You sure you put the right args?"),
+//}
+//}
+//}
+
 impl Config {
     pub fn create_project(
         name: ConfigName,
