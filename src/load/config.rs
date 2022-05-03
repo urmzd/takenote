@@ -4,8 +4,8 @@ use std::fmt;
 use std::fs;
 use std::path::Path;
 
-pub type ConfigChildren = Option<Vec<String>>;
 pub type ConfigName = String;
+pub type ConfigChildren = Option<Vec<String>>;
 
 /// A container holding the parsed data from a Takenote configuration file.
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]

@@ -1,7 +1,5 @@
 use clap::{Parser, Subcommand};
 
-use crate::load::config::{ConfigChildren, ConfigName};
-
 #[derive(Debug, Parser)]
 #[clap(author, version, about)]
 #[clap(propagate_version = true)]
@@ -15,11 +13,12 @@ pub struct Cli {
 pub enum Subcommands {
     Init {
         #[clap(short, long)]
-        name: ConfigName,
+        name: String,
         #[clap(short, long)]
-        children: ConfigChildren,
+        children: Option<Vec<String>>,
     },
     Find {
+        #[clap(short, long)]
         query: String,
     },
 }

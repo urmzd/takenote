@@ -1,6 +1,6 @@
-use std::error::Error;
 use clap::StructOpt;
-use takenote::cli::parser::{Cli}
+use std::error::Error;
+use takenote::cli::parser::Cli;
 
 fn main() -> Result<(), Box<dyn Error>> {
     //let random_path = Path::new("./random_proj");
