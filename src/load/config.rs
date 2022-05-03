@@ -4,7 +4,6 @@ use std::fmt;
 use std::fs;
 use std::path::Path;
 
-use crate::cli::parser::Cli;
 use crate::cli::parser::Subcommands;
 
 pub type ConfigName = String;
@@ -30,13 +29,13 @@ impl fmt::Display for ConfigError {
 
 impl Error for ConfigError {}
 
-impl TryFrom<Cli> for Config {
+impl TryFrom<Subcommands> for Config {
     type Error = &'static str;
 
-    fn try_from(value: Cli) -> Result<Self, Self::Error> {
-        match value.commands {
+    fn try_from(value: Subcommands) -> Result<Self, Self::Error> {
+        match value {
             Subcommands::Init { name, children } => Ok(Config { name, children }),
-            _ => Err("You sure you put the right args?"),
+            _ => Err("Called"),
         }
     }
 }
