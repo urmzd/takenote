@@ -4,6 +4,9 @@ use std::fmt;
 use std::fs;
 use std::path::Path;
 
+use crate::cli::parser::Cli;
+use crate::cli::parser::Subcommands;
+
 pub type ConfigName = String;
 pub type ConfigChildren = Option<Vec<String>>;
 
@@ -27,17 +30,16 @@ impl fmt::Display for ConfigError {
 
 impl Error for ConfigError {}
 
-//impl TryFrom<Cli> for Config {
-//type Error = &'static str;
+impl TryFrom<Cli> for Config {
+    type Error = &'static str;
 
-//fn try_from(value: Cli) -> Result<Self, Self::Error> {
-//match &value.commands {
-//Subcommands::Init { name, children } => Ok(Config { name, children }),
-//// FIXME - comment
-//_ => Err("You sure you put the right args?"),
-//}
-//}
-//}
+    fn try_from(value: Cli) -> Result<Self, Self::Error> {
+        match value.commands {
+            Subcommands::Init { name, children } => Ok(Config { name, children }),
+            _ => Err("You sure you put the right args?"),
+        }
+    }
+}
 
 impl Config {
     pub fn create_project(

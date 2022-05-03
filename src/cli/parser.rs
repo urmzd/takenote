@@ -4,9 +4,9 @@ use clap::{Parser, Subcommand};
 #[clap(author, version, about)]
 #[clap(propagate_version = true)]
 pub struct Cli {
-    message: Option<String>,
+    pub message: Option<String>,
     #[clap(subcommand)]
-    commands: Subcommands,
+    pub commands: Subcommands,
 }
 
 #[derive(Debug, Subcommand)]
