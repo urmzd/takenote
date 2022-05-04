@@ -1,50 +1,52 @@
 use clap::StructOpt;
+use clap::{Parser, Subcommand};
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 use std::error::Error;
 use std::fmt;
 use std::fs;
-use std::{
-    env,
-    path::{Path, PathBuf},
-};
+use std::path::{Path, PathBuf};
 
-/// Holds the values of the environment variables required to run `takenote`.
-#[derive(Debug, Serialize)]
-pub struct Environment {
-    /// Points to the directory which contains the entrypoint.
-    pub default_dir: PathBuf,
-}
+/// TODO - remove this after refactoring.
+/// Ramblings of a Software Engineer: Read at your own discretion...
+/// So this is how I envision the application working.
+///
+/// When the application is initialized, the system uses an index file
+/// `.takenote.index` which holds two things.
+///
+/// Note: We use [b-tree indexing](https://en.wikipedia.org/wiki/B-tree)
+///
+/// 1. It must hold the reference to the "default" journal. This is solely for conveinence
+/// and is a way of preventing an unneccessary arg when using any subcommand.
+///
+/// e.g. `takenote "random message to default journal"` instead of `takenote --name
+/// "some_journal_name" "some_message"`.
+///
+/// Of course, we allow people to specify the name if so desired.
+///
+/// 2. We need a way to link different references during `markdown`
+/// compilation.  Without an index file, we have no idea where to find a journal.
+///
+/// -- thinking more on this, I wonder if we need an index file within every child node (excluding
+/// the leaf). Reading more on b-tree indexing, we likely do. Will investigate more, when querying
+/// becomes a bottleneck.
+///
+/// Ok back to the commmands and the actual use case and interactions that need supporting.
+/// Lets first start by showing example commands
+///
+/// `takenote init --name "urmzd's journal" --default`
+/// `takenote "some random message."`
+/// `takenote find "some text using custom query language?"` -- will need to revisit this.
+/// `taknote generate --language "markdown"` -- we store notes in plain text (encrypted likely)
+/// text.
 
-impl Environment {
-    /// Retrieves the environment variables needed to intialize the project.
-    ///
-    /// # Panics
-    ///
-    /// Panics if the required environment variables are not set.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// let environment = Environment::new();
-    /// ```
-    pub fn new() -> Environment {
-        let default_dir_str: String = env::var(DEFAULT_HEAD_ENV_VAR).unwrap();
-        let default_dir: PathBuf = Path::new(&default_dir_str).to_owned();
-
-        Environment { default_dir }
-    }
-}
-pub const DEFAULT_HEAD_ENV_VAR: &str = "TAKENOTE_DEFAULT_HEAD";
 pub type ConfigName = String;
-pub type ConfigChildren = Option<Vec<String>>;
 
 /// A container holding the parsed data from a Takenote configuration file.
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
 pub struct Config {
     /// The name associated with this journal.
     name: ConfigName,
-    /// A collection of journals available to reference.
-    children: ConfigChildren,
 }
 
 #[derive(Clone, Debug)]
@@ -63,23 +65,19 @@ impl TryFrom<Subcommands> for Config {
 
     fn try_from(value: Subcommands) -> Result<Self, Self::Error> {
         match value {
-            Subcommands::Init { name, children } => Ok(Config { name, children }),
-            _ => Err("Called"),
+            Subcommands::Init { name, .. } => Ok(Config { name }),
+            _ => Err("Called with the wrong subcommand."),
         }
     }
 }
 
 impl Config {
-    pub fn create_project(
-        name: ConfigName,
-        children: ConfigChildren,
-        path: &Path,
-    ) -> Result<(), Box<dyn Error>> {
+    pub fn create_project(name: ConfigName, path: &Path) -> Result<(), Box<dyn Error>> {
         let project_dir = match path.to_owned().into_os_string().into_string() {
             Ok(string_path) => string_path,
             _ => return Err(ConfigError.into()),
         };
-        let config = Config { name, children };
+        let config = Config { name };
 
         // Create directory.
         std::fs::create_dir_all(project_dir)?;
@@ -92,12 +90,13 @@ impl Config {
         return Ok(());
     }
 }
-use clap::{Parser, Subcommand};
 
 #[derive(Debug, Parser)]
 #[clap(author, version, about)]
 #[clap(propagate_version = true)]
 pub struct Cli {
+    #[clap(short, long)]
+    name: Option<String>,
     pub message: Option<String>,
     #[clap(subcommand)]
     pub commands: Subcommands,
@@ -118,13 +117,18 @@ pub enum Subcommands {
     Find {
         #[clap(short, long)]
         query: String,
-        #[clap(short, long)]
-        name: Option<String>,
     },
 }
 
+struct JournalReference(String, Path);
+
+/// Holds journal references.
+struct Index {
+    default: String,
+    references: HashMap<String, PathBuf>,
+}
+
 fn main() -> Result<(), Box<dyn Error>> {
-    //let random_path = Path::new("./random_proj");
     //let random_path_buf = random_path.to_owned();
     //let random_name = "random".to_owned();
 
